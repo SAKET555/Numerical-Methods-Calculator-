@@ -1,0 +1,270 @@
+@import "katex/dist/katex.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-slate: #0b0f19;
+  --card-slate: #151c2c;
+  --card-hover: #1e273e;
+  --border-slate: #2a364f;
+  --border-bright: #3b4d71;
+  
+  --sky-blue: #38bdf8;
+  --indigo-accent: #6366f1;
+  --emerald-accent: #10b981;
+  --rose-accent: #f43f5e;
+  --amber-accent: #f59e0b;
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+  
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-slate);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* Typography & Code */
+.font-mono {
+  font-family: 'Fira Code', 'JetBrains Mono', monospace !important;
+}
+
+/* Enterprise Container Panel */
+.enterprise-card {
+  background: var(--card-slate);
+  border: 1px solid var(--border-slate);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+/* Enterprise Header Topbar */
+.enterprise-header {
+  background: #070a12;
+  border-bottom: 1px solid var(--border-slate);
+  padding: 12px 24px;
+}
+
+/* Form Controls & Helper Guides */
+.field-card {
+  background: #0f172a;
+  border: 1px solid var(--border-slate);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.field-card:focus-within {
+  border-color: var(--sky-blue);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field-label-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.field-symbol-badge {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.field-explanation {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border-left: 3px solid #38bdf8;
+}
+
+.input-field-ent {
+  background: #070a12;
+  border: 1px solid var(--border-slate);
+  color: var(--text-main);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  width: 100%;
+}
+
+.input-field-ent:focus {
+  outline: none;
+  border-color: var(--sky-blue);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+/* Action Buttons */
+.btn-enterprise-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-weight: 600;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-enterprise-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-enterprise-secondary {
+  background: #151c2c;
+  color: var(--text-main);
+  border: 1px solid var(--border-slate);
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-enterprise-secondary:hover {
+  background: #2a364f;
+  color: #ffffff;
+  border-color: var(--sky-blue);
+}
+
+/* Info Callout Banners */
+.info-callout {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 8px;
+  padding: 14px 18px;
+  color: #e0f2fe;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.interpretation-card {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 8px;
+  padding: 16px 20px;
+  color: #e0e7ff;
+}
+
+/* HIGHLY STYLISH DATA TABLES WITH CRISP GRID LINES & ZEBRA STRIPING */
+.enterprise-table-container {
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.enterprise-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+}
+
+.enterprise-table th {
+  background: #0e1424;
+  color: #38bdf8;
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--border-bright);
+  border-right: 1px solid var(--border-slate);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.enterprise-table th:last-child {
+  border-right: none;
+}
+
+.enterprise-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-slate);
+  border-right: 1px solid var(--border-slate);
+  color: var(--text-main);
+}
+
+.enterprise-table td:last-child {
+  border-right: none;
+}
+
+/* Alternate Zebra Row Color */
+.enterprise-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.enterprise-table tbody tr:nth-child(odd) {
+  background-color: rgba(15, 23, 42, 0.6);
+}
+
+.enterprise-table tbody tr:hover td {
+  background-color: rgba(56, 189, 248, 0.1) !important;
+  color: #ffffff;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-slate);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
