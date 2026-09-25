@@ -186,4 +186,6 @@ Numerical_Methods_Assignment/
 ---
 
 ## 📄 License & Credits
+Licensed under the [Apache License 2.0](LICENSE).
+
 Built for **Numerical Methods Assignment** • Powered by **Python, FastAPI, SymPy, NumPy, React, and KaTeX**.
