@@ -21,6 +21,7 @@ app.add_middleware(
 )
 
 @app.get("/")
+@app.get("/api/")  # the frontend health check calls /api/ through the Vite proxy
 def read_root():
     return {"message": "NumCore Studio API is operational."}
 

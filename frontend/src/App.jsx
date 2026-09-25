@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import MethodCard from './components/MethodCard';
+import MathKeyboard, { EXPR_KEYS } from './components/MathKeyboard';
+import { syllabusExamples } from './data/syllabusExamples';
 import { Binary, LineChart, Sigma, Gauge, Grid, ChevronRight } from 'lucide-react';
 
 const MODULES = [
@@ -72,6 +74,7 @@ export default function App() {
 
   const activeModule = MODULES.find(m => m.id === activeModuleId);
   const activeMethod = activeModule.methods.find(m => m.key === activeMethodKey) || activeModule.methods[0];
+  const hasExpressionInput = EXPR_KEYS.some(k => k in (syllabusExamples[activeMethod.key] || {}));
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-slate)' }}>
@@ -86,10 +89,10 @@ export default function App() {
       />
 
       {/* Main Workspace Layout */}
-      <main style={{ flex: 1, maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '24px', display: 'flex', gap: '24px' }}>
+      <main style={{ flex: 1, maxWidth: '1720px', width: '100%', margin: '0 auto', padding: '24px', display: 'flex', gap: '24px' }}>
         
         {/* Left Sidebar Navigation */}
-        <aside style={{ width: '320px', flexShrink: 0 }}>
+        <aside style={{ width: '300px', flexShrink: 0 }}>
           <div className="enterprise-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px', sticky: 'top', top: '24px' }}>
             <div style={{ fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', tracking: '1px', color: '#64748b', paddingLeft: '4px' }}>
               Numerical Methods Index (15 Algorithms)
@@ -172,6 +175,13 @@ export default function App() {
             precision={precision}
           />
         </section>
+
+        {/* Right Math Keyboard (only for methods that take a function expression) */}
+        {hasExpressionInput && (
+          <aside style={{ width: '290px', flexShrink: 0 }}>
+            <MathKeyboard />
+          </aside>
+        )}
 
       </main>
 

@@ -3,6 +3,7 @@ import { BookOpen, Play, CheckCircle2, AlertCircle, Info, HelpCircle, Table as T
 import LaTeXViewer from './LaTeXViewer';
 import MatrixInput from './MatrixInput';
 import HeatmapGrid from './HeatmapGrid';
+import { EXPR_KEYS } from './MathKeyboard';
 import { methodMetadata } from '../data/methodMetadata';
 import { syllabusExamples } from '../data/syllabusExamples';
 
@@ -239,6 +240,9 @@ export default function MethodCard({ methodKey, precision }) {
                       type={typeof val === 'number' ? 'number' : 'text'}
                       step="any"
                       placeholder={inputMeta.placeholder || ''}
+                      data-expr={EXPR_KEYS.includes(key) ? key : undefined}
+                      autoComplete="off"
+                      spellCheck={false}
                       className="input-field-ent font-mono"
                       value={val !== undefined ? val : ''}
                       onChange={(e) => {

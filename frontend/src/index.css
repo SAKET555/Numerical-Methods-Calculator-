@@ -268,3 +268,98 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+
+/* Math keyboard (right-hand side panel) */
+.math-keyboard {
+  position: sticky;
+  top: 24px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+.math-keyboard-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.math-keyboard-status {
+  font-size: 11px;
+  color: var(--text-subtle);
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--border-bright);
+  border-radius: 4px;
+  padding: 6px 10px;
+  line-height: 1.4;
+}
+
+.math-keyboard-status.active {
+  color: #bae6fd;
+  border-left-color: var(--sky-blue);
+}
+
+.math-keyboard-group-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-subtle);
+  margin-bottom: 5px;
+}
+
+.math-keyboard-grid {
+  display: grid;
+  gap: 4px;
+}
+
+.math-keyboard-edit {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.mk-key {
+  background: #0f172a;
+  color: var(--text-main);
+  border: 1px solid var(--border-slate);
+  border-radius: 5px;
+  padding: 7px 2px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s ease;
+}
+
+.mk-key:hover:not(:disabled) {
+  background: #1e273e;
+  border-color: var(--sky-blue);
+  color: #ffffff;
+}
+
+.mk-key:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.mk-key:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mk-key-pad {
+  font-weight: 600;
+  padding: 9px 2px;
+}
+
+.mk-key-util {
+  color: var(--sky-blue);
+}

@@ -16,8 +16,21 @@ def parse_sympy_func(expr_str, vars_list=('x',)):
     """
     transformations = standard_transformations + (implicit_multiplication_application, convert_xor)
     symbols = [sp.Symbol(v) for v in vars_list]
-    parsed = parse_expr(expr_str, transformations=transformations)
-    
+    # Without these, SymPy reads `e` as a free symbol (so e^x is not Euler's number)
+    # and splits `log10` into l*o*g*1*0 under implicit multiplication.
+    local_dict = {
+        'e': sp.E,
+        'ln': sp.log,
+        'log10': lambda a: sp.log(a, 10),
+        'log2': lambda a: sp.log(a, 2),
+        'cbrt': sp.cbrt,
+        'arcsin': sp.asin, 'arccos': sp.acos, 'arctan': sp.atan,
+        'arcsinh': sp.asinh, 'arccosh': sp.acosh, 'arctanh': sp.atanh,
+    }
+    for s in symbols:
+        local_dict[s.name] = s
+    parsed = parse_expr(expr_str, local_dict=local_dict, transformations=transformations)
+
     # modules=['numpy', 'math'] for mathematical functions
     func = sp.lambdify(symbols, parsed, modules=['numpy', {'exp': np.exp, 'e': math.e, 'ln': np.log}])
     return func, parsed
@@ -595,16 +608,23 @@ def laplace_poisson_solver(Nx: int, Ny: int, top: float, bottom: float, left: fl
     
     hx = 1.0 / (Nx - 1)
     hy = 1.0 / (Ny - 1)
-    h2 = hx * hy
-    
+    hx2, hy2 = hx * hx, hy * hy
+
+    # g(x, y) sampled once; row 0 is the top edge, i.e. y = 1 (rows run top -> bottom).
+    g_grid = np.zeros((Ny, Nx), dtype=float)
+    for i in range(1, Ny - 1):
+        for j in range(1, Nx - 1):
+            g_grid[i, j] = float(g_func(j * hx, 1.0 - i * hy))
+
     converged = False
     for it in range(max_iter):
         diff = 0.0
         for i in range(1, Ny - 1):
             for j in range(1, Nx - 1):
                 old_val = grid[i, j]
-                g_val = float(g_func(j * hx, i * hy))
-                new_val = 0.25 * (grid[i-1, j] + grid[i+1, j] + grid[i, j-1] + grid[i, j+1] - h2 * g_val)
+                # 5-point stencil for u_xx + u_yy = g (reduces to the plain average when hx == hy)
+                new_val = (hy2 * (grid[i, j-1] + grid[i, j+1]) + hx2 * (grid[i-1, j] + grid[i+1, j])
+                           - hx2 * hy2 * g_grid[i, j]) / (2.0 * (hx2 + hy2))
                 grid[i, j] = new_val
                 diff = max(diff, abs(new_val - old_val))
                 

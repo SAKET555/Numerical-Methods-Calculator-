@@ -7,9 +7,11 @@
 ## 📖 Table of Contents
 1. [Key Features](#-key-features)
 2. [Parameter Guide ("What is What")](#-parameter-guide-what-is-what)
-3. [15 Numerical Methods & Module Reference](#-15-numerical-methods--module-reference)
-4. [Installation & Setup Instructions](#-installation--setup-instructions)
-5. [Project Architecture & File Structure](#-project-architecture--file-structure)
+3. [Writing Functions & the Math Keyboard](#-writing-functions--the-math-keyboard)
+4. [15 Numerical Methods & Module Reference](#-15-numerical-methods--module-reference)
+5. [Installation & Setup Instructions](#-installation--setup-instructions)
+6. [Testing & Verification](#-testing--verification)
+7. [Project Architecture & File Structure](#-project-architecture--file-structure)
 
 ---
 
@@ -20,6 +22,7 @@
 - **"What is What" Parameter Field Guides**: Every input input parameter includes explicit mathematical badges and plain-English explanations so users know exactly what values to provide.
 - **Natural Language Output Interpretations**: Plain-English interpretation cards explaining computed roots, convergence rates, error tolerances, and table column definitions.
 - **2D Mesh PDE Heatmap Visualizer**: Color-mapped spatial heat distribution grids for 2D Laplace / Poisson equations and 1D Heat Equation time evolutions.
+- **Math Keyboard**: A calculator-style panel on the right appears for every method that takes a function (`f(x)`, `g(x)`, `P/Q/R(x)`, `g(x, y)`, initial condition). Click a function field, then use the keys for `√`, `∛`, `ⁿ√`, `sin/cos/tan` (+ inverse and hyperbolic), `ln`, `log₁₀`, `eˣ`, `π`, `d/dx`, `∫ dx`, `∫ₐᵗ`, `Σ`, `lim`, digits and operators. Keys insert at the cursor; you can also type by hand (`^` = power, `2x` = `2*x`).
 - **Instant Syllabus Example Loader**: Preset buttons for every method to load standard academic textbook examples in a single click.
 
 ---
@@ -41,6 +44,21 @@ Below is a cheat-sheet explaining common input parameters used across the numeri
 | **`a` & `b`** | Interval Bounds | Lower limit ($a$) and upper limit ($b$) for definite integration or boundary value domains. | `a=0.0, b=1.0` |
 | **`alpha` & `beta`** | Boundary Values | Dirichlet boundary condition values $y(a) = \alpha$ and $y(b) = \beta$ at domain endpoints. | `alpha=0.0, beta=0.0` |
 | **`r`** | Mesh Stability Parameter | Crank-Nicolson heat diffusion stability parameter $r = \frac{\alpha \Delta t}{\Delta x^2}$. | `r = 0.5` |
+
+---
+
+## ⌨️ Writing Functions & the Math Keyboard
+
+Every method that takes a function (`f(x)`, `g(x)`, `P(x)`, `Q(x)`, `R(x)`, `g(x, y)`, or an initial condition) shows a **Math Keyboard** panel on the right. Click a function field, then press keys to insert at the cursor (templates like `sqrt(  )` put the cursor inside the brackets). You can also type expressions by hand.
+
+| Keyboard group | Keys | Inserts |
+| :--- | :--- | :--- |
+| **Calculus** | `d/dx`, `d²/dx²`, `∫ dx`, `∫ₐᵗ`, `Σ`, `lim` | `diff(f, x)`, `diff(f, x, 2)`, `integrate(f, x)`, `integrate(f(t), (t, 0, x))`, `summation(f(k), (k, 1, 10))`, `limit(f, x, 0)` |
+| **Roots & powers** | `√`, `∛`, `ⁿ√`, `\|x\|`, `x²`, `x³`, `xⁿ`, `1/x`, `eˣ`, `ln`, `log₁₀`, `log₂` | `sqrt()`, `cbrt()`, `root(x, n)`, `abs()`, `^2`, `^3`, `^()`, `1/()`, `exp()`, `ln()`, `log10()`, `log2()` |
+| **Trigonometry** | `sin cos tan sec csc cot`, inverses, `sinh cosh tanh` | `sin()`, …, `asin()`, `acos()`, `atan()`, `sinh()`, … |
+| **Constants & variables** | `x`, `y`, `π`, `e`, `( )`, `,` | `x`, `y`, `pi`, `e` (Euler's number) |
+
+**Typing syntax:** `^` is power (`x^3`), implicit multiplication works (`2x` = `2*x`), and `e^x`, `pi`, `ln(x)`, `log10(x)` are all understood. `y` is only meaningful for the ODE solvers and the Poisson source term `g(x, y)`. Calculus expressions are evaluated symbolically first, so for example `diff(x^3, x)` is integrated as `3x²` by Simpson's rule.
 
 ---
 
@@ -124,6 +142,18 @@ npm run dev
 
 ---
 
+## ✅ Testing & Verification
+
+```bash
+cd backend
+python -m pytest -q
+```
+
+- `test_solvers.py` — smoke tests: all 15 solvers run and give textbook answers.
+- `test_verification.py` — strict checks against independent references (SciPy, NumPy, closed-form solutions, exact discrete solutions): expression parsing for every keyboard function, root finders vs `brentq`, Lagrange vs `scipy.interpolate.lagrange`, curve fits vs `np.polyfit`, Simpson/Romberg/Gauss vs `scipy.integrate`, RK4 vs `solve_ivp`, BVP vs analytic solutions, Laplace vs a direct linear solve, Poisson vs a manufactured solution (including non-square grids and y-orientation), and Crank–Nicolson vs the exact discrete decay factor.
+
+---
+
 ## 📂 Project Architecture & File Structure
 
 ```
@@ -133,7 +163,8 @@ Numerical_Methods_Assignment/
 │   ├── main.py             # FastAPI REST endpoints (15 POST solvers) & CORS configuration
 │   ├── solvers.py          # Pure numerical algorithm implementations & SymPy parser
 │   ├── requirements.txt    # Python dependencies (fastapi, uvicorn, numpy, scipy, sympy, pydantic)
-│   └── test_solvers.py     # Automated test suite for all 15 numerical algorithms
+│   ├── test_solvers.py     # Smoke tests for all 15 numerical algorithms
+│   └── test_verification.py # Strict tests against SciPy / NumPy / analytic references
 └── frontend/
     ├── vite.config.js      # Vite proxy setup (/api -> http://localhost:8000)
     ├── package.json        # Frontend packages (React, Lucide-React, KaTeX)
@@ -146,6 +177,7 @@ Numerical_Methods_Assignment/
         └── components/
             ├── Header.jsx       # AWS enterprise topbar & precision selector
             ├── MethodCard.jsx   # Interactive workspace card for parameters & results
+            ├── MathKeyboard.jsx # Calculator-style side keyboard for function inputs
             ├── MatrixInput.jsx  # Matrix A & Vector B input grid editor
             ├── HeatmapGrid.jsx  # 2D Heatmap visualization grid for PDEs
             └── LaTeXViewer.jsx  # KaTeX math formula display component
